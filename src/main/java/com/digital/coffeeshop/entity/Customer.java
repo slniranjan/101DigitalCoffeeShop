@@ -19,10 +19,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(
-    name = "customer", 
-    uniqueConstraints = @UniqueConstraint(name = "mobile_number_unique", columnNames = "mobile_number")
-    )
+@Table(name = "customer", uniqueConstraints = @UniqueConstraint(name = "mobile_number_unique", columnNames = "mobile_number"))
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,7 +29,7 @@ public class Customer {
     @Id()
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long customerId;
+    private Long id;
 
     @Column(name = "name")
     private String customerName;

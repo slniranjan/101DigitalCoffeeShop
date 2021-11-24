@@ -40,5 +40,5 @@ public class Shop {
     private LocalTime closeTime;
 
     @Column(name = "gps_location", nullable = false)
-    private Long gpsLocaLong;
+    private Long gpsLocation;
 }

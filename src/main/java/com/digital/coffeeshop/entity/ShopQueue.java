@@ -31,12 +31,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TypeDef(
-    name = "list-array",
-    typeClass = ListArrayType.class
-)
+@TypeDef(name = "list-array", typeClass = ListArrayType.class)
 public class ShopQueue {
-    
+
     @Id()
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,10 +46,7 @@ public class ShopQueue {
     private Integer size;
 
     @Type(type = "list-array")
-    @Column(
-        name = "customer_list",
-        columnDefinition = "bigint[]"
-    )
+    @Column(name = "customer_list", columnDefinition = "bigint[]")
     private List<Long> customers;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
