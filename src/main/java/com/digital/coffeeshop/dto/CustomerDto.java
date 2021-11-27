@@ -17,7 +17,6 @@ public class CustomerDto {
 
   @JsonProperty(required = true)
   @NotNull
-  @Pattern(regexp = "^[a-zA-Z0-9+=@_ ]*$")
   private String customerName;
 
   @JsonProperty(required = true)

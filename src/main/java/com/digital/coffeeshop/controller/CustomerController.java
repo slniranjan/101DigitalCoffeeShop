@@ -5,11 +5,17 @@ import com.digital.coffeeshop.entity.Customer;
 import com.digital.coffeeshop.exception.ResourceNotFoundException;
 import com.digital.coffeeshop.service.CustomerService;
 import com.digital.coffeeshop.util.Constant;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.jaxb.SpringDataJaxb.OrderDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -47,9 +53,9 @@ public class CustomerController {
    * @param customerDto new customer details
    * @return CustomerDto Register/Save new customer
    */
-  //  @Operation(summary = "Crate a new order")
-//  @ApiResponse(responseCode = "201", description = "Order is created", content = {
-//      @Content(mediaType = Constant.PRODUCE_TYPE, schema = @Schema(implementation = CustomerDto.class))})
+  @Operation(summary = "Register new customer")
+  @ApiResponse(responseCode = "201", description = "Customer is created", content = {
+      @Content(mediaType = Constant.PRODUCE_TYPE, schema = @Schema(implementation = CustomerDto.class))})
   @PostMapping(consumes = Constant.PRODUCE_TYPE)
   public ResponseEntity<CustomerDto> registerCustomer(@Valid @RequestBody CustomerDto customerDto) {
     logger.info("Customer creation start:");
@@ -69,6 +75,11 @@ public class CustomerController {
    * @param customerId - search id of the customer
    * @return CutomerDto Return customer details by given customer id
    */
+  @Operation(summary = "Get a customer by its id")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Found the customer", content = {
+          @Content(mediaType = Constant.PRODUCE_TYPE, schema = @Schema(implementation = CustomerDto.class))}),
+      @ApiResponse(responseCode = "404", description = "Order not found", content = @Content)})
   @GetMapping(path = "/{id}")
   public ResponseEntity<CustomerDto> getCustomer(@PathVariable("id") Long customerId) {
     logger.info("Get customer by id started:");
