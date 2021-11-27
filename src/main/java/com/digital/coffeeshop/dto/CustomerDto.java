@@ -2,6 +2,7 @@ package com.digital.coffeeshop.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +17,7 @@ public class CustomerDto {
 
   @JsonProperty(required = true)
   @NotNull
+  @Pattern(regexp = "^[a-zA-Z0-9+=@_ ]*$")
   private String customerName;
 
   @JsonProperty(required = true)

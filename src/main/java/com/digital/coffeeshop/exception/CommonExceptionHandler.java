@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -29,6 +30,14 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
 
   private static final Logger local_logger = LoggerFactory.getLogger(CommonExceptionHandler.class);
+
+  @ExceptionHandler(ResourceNotFoundException.class)
+  public ResponseEntity<Object> resourceNotFoundException(RuntimeException exception,
+      HttpHeaders headers,
+      HttpStatus status, WebRequest request) {
+    return getExceptionResponseEntity(exception, status, request,
+        Collections.singletonList(exception.getLocalizedMessage()));
+  }
 
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(
