@@ -10,13 +10,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "shop_queue")
+@Table(name = "shop_queue", uniqueConstraints = @UniqueConstraint(name = "queue_name_unique", columnNames = "name"))
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,7 +35,7 @@ public class ShopQueue {
   @Column(name = "size")
   private Integer size;
 
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+  @ManyToOne(cascade = CascadeType.ALL, optional = false)
   @JoinColumn(name = "shop_id", nullable = false)
   private Shop shop;
 

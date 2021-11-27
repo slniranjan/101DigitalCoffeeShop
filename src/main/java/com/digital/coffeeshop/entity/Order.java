@@ -1,13 +1,12 @@
 package com.digital.coffeeshop.entity;
 
 import com.digital.coffeeshop.util.OrderStatusEnum;
-import java.util.List;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,17 +37,20 @@ public class Order {
   @Enumerated(EnumType.STRING)
   private OrderStatusEnum orderStatus;
 
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+  @Column(name = "queue_position")
+  private Integer queuePosition;
+
+  @ManyToOne(cascade = CascadeType.ALL, optional = false)
   @JoinColumn(name = "customer_id", nullable = false)
   private Customer customer;
 
-  @ManyToMany(cascade = {CascadeType.ALL})
+  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinTable(name = "order_item", joinColumns = {
       @JoinColumn(name = "order_id")}, inverseJoinColumns = {
       @JoinColumn(name = "menu_item_id")})
-  List<MenuItem> menuItems;
+  Set<MenuItem> menuItems;
 
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+  @ManyToOne(cascade = CascadeType.ALL, optional = false)
   @JoinColumn(name = "queue_id", nullable = false)
   private ShopQueue shopQueue;
 
