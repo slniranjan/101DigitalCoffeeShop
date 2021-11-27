@@ -1,9 +1,10 @@
 package com.digital.coffeeshop.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class Constant {
+
+  private Constant(){
+    throw new IllegalStateException("Utility class");
+  }
 
   public static final String PRODUCE_TYPE = "application/json";
 
