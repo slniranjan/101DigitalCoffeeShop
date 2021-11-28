@@ -32,10 +32,9 @@ public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
   private static final Logger local_logger = LoggerFactory.getLogger(CommonExceptionHandler.class);
 
   @ExceptionHandler(ResourceNotFoundException.class)
-  public ResponseEntity<Object> resourceNotFoundException(RuntimeException exception,
-      HttpHeaders headers,
-      HttpStatus status, WebRequest request) {
-    return getExceptionResponseEntity(exception, status, request,
+  public ResponseEntity<Object> resourceNotFoundException(ResourceNotFoundException exception,
+      WebRequest request) {
+    return getExceptionResponseEntity(exception, HttpStatus.NOT_FOUND, request,
         Collections.singletonList(exception.getLocalizedMessage()));
   }
 
