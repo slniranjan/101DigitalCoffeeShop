@@ -1,0 +1,149 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+  <changeSet author="niranjan (generated)" id="1638148550010-1">
+    <createTable tableName="customer">
+      <column autoIncrement="true" name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="customer_pkey"/>
+      </column>
+      <column name="address" type="VARCHAR(255)"/>
+      <column name="name" type="VARCHAR(255)"/>
+      <column name="mobile_number" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet author="niranjan (generated)" id="1638148550010-2">
+    <createTable tableName="customer_order">
+      <column autoIncrement="true" name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="customer_order_pkey"/>
+      </column>
+      <column name="status" type="VARCHAR(255)"/>
+      <column name="queue_position" type="INTEGER"/>
+      <column name="customer_id" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="queue_id" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet author="niranjan (generated)" id="1638148550010-3">
+    <createTable tableName="menu_item">
+      <column autoIncrement="true" name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="menu_item_pkey"/>
+      </column>
+      <column name="description" type="VARCHAR(255)"/>
+      <column name="item_name" type="VARCHAR(255)"/>
+      <column name="price" type="FLOAT8"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="niranjan (generated)" id="1638148550010-4">
+    <createTable tableName="shop">
+      <column autoIncrement="true" name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="shop_pkey"/>
+      </column>
+      <column name="close_time" type="TIME WITHOUT TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="contact_details" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="latitude" type="FLOAT4">
+        <constraints nullable="false"/>
+      </column>
+      <column name="longitude" type="FLOAT4">
+        <constraints nullable="false"/>
+      </column>
+      <column name="name" type="VARCHAR(255)"/>
+      <column name="number_of_queue" type="INTEGER">
+        <constraints nullable="false"/>
+      </column>
+      <column name="open_time" type="TIME WITHOUT TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="avg_order_process_time" type="INTEGER">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet author="niranjan (generated)" id="1638148550010-5">
+    <createTable tableName="shop_queue">
+      <column autoIncrement="true" name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="shop_queue_pkey"/>
+      </column>
+      <column name="name" type="VARCHAR(255)"/>
+      <column name="size" type="INTEGER"/>
+      <column name="shop_id" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet author="niranjan (generated)" id="1638148550010-6">
+    <createTable tableName="shop_user">
+      <column autoIncrement="true" name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="shop_user_pkey"/>
+      </column>
+      <column name="name" type="VARCHAR(255)"/>
+      <column name="password" type="VARCHAR(15)"/>
+      <column name="user_role" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="shop_id" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet author="niranjan (generated)" id="1638148550010-7">
+    <createTable tableName="shop_menu">
+      <column name="shop_id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="shop_menu_pkey"/>
+      </column>
+      <column name="menu_item_id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="shop_menu_pkey"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet author="niranjan (generated)" id="1638148550010-8">
+    <createTable tableName="order_item">
+      <column name="order_id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="order_item_pkey"/>
+      </column>
+      <column name="menu_item_id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="order_item_pkey"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet author="niranjan (generated)" id="1638148550010-9">
+    <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="customer_order" constraintName="fkf9abd30bhiqvugayxlpq8ryq9" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="customer" validate="true"/>
+  </changeSet>
+  <changeSet author="niranjan (generated)" id="1638148550010-10">
+    <addUniqueConstraint columnNames="mobile_number" constraintName="mobile_number_unique" tableName="customer"/>
+  </changeSet>
+  <changeSet author="niranjan (generated)" id="1638148550010-11">
+    <addForeignKeyConstraint baseColumnNames="queue_id" baseTableName="customer_order" constraintName="fk27hylp3aw586vvmxwnr72ytcp" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="shop_queue" validate="true"/>
+  </changeSet>
+  <changeSet author="niranjan (generated)" id="1638148550010-12">
+    <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="order_item" constraintName="fkgv4bnmo7cbib2nh0b2rw9yvir" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="customer_order" validate="true"/>
+  </changeSet>
+  <changeSet author="niranjan (generated)" id="1638148550010-13">
+    <addForeignKeyConstraint baseColumnNames="menu_item_id" baseTableName="shop_menu" constraintName="fk156bpib7p0e1vclregtiug2tg" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="menu_item" validate="true"/>
+  </changeSet>
+  <changeSet author="niranjan (generated)" id="1638148550010-14">
+    <addForeignKeyConstraint baseColumnNames="menu_item_id" baseTableName="order_item" constraintName="fk1my78itket7mhyn3wt4g6j4sq" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="menu_item" validate="true"/>
+  </changeSet>
+  <changeSet author="niranjan (generated)" id="1638148550010-15">
+    <addUniqueConstraint columnNames="item_name" constraintName="item_name_unique" tableName="menu_item"/>
+  </changeSet>
+  <changeSet author="niranjan (generated)" id="1638148550010-16">
+    <addForeignKeyConstraint baseColumnNames="shop_id" baseTableName="shop_user" constraintName="fkb16wr519ua59yoo2fn6fu3fqs" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="shop" validate="true"/>
+  </changeSet>
+  <changeSet author="niranjan (generated)" id="1638148550010-17">
+    <addForeignKeyConstraint baseColumnNames="shop_id" baseTableName="shop_queue" constraintName="fkhf87wq9sl18fn55mrhqclyd5t" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="shop" validate="true"/>
+  </changeSet>
+  <changeSet author="niranjan (generated)" id="1638148550010-18">
+    <addForeignKeyConstraint baseColumnNames="shop_id" baseTableName="shop_menu" constraintName="fknx8imktxicq5e20err7xeipa1" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="shop" validate="true"/>
+  </changeSet>
+  <changeSet author="niranjan (generated)" id="1638148550010-19">
+    <addUniqueConstraint columnNames="name" constraintName="queue_name_unique" tableName="shop_queue"/>
+  </changeSet>
+</databaseChangeLog>
