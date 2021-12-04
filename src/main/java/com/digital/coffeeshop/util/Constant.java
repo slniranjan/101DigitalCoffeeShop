@@ -6,8 +6,6 @@ public class Constant {
     throw new IllegalStateException("Utility class");
   }
 
-  public static final String PRODUCE_TYPE = "application/json";
-
   public static final String FIELD_ERROR_SEPARATOR = ": ";
   public static final String PATH = "path";
   public static final String ERRORS = "error";

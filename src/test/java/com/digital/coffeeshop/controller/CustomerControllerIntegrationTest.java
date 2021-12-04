@@ -1,8 +1,9 @@
 package com.digital.coffeeshop.controller;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
 import com.digital.coffeeshop.dto.CustomerDto;
+import com.fasterxml.jackson.databind.JsonNode;
+import java.net.URI;
+import java.net.URISyntaxException;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -15,43 +16,74 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ExtendWith(SpringExtension.class)
+//@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @Disabled
 public class CustomerControllerIntegrationTest {
 
-  private final TestRestTemplate testRestTemplate;
+//  private final TestRestTemplate testRestTemplate;
 
   @LocalServerPort
   private int port;
 
   @Autowired
-  public CustomerControllerIntegrationTest(
-      TestRestTemplate testRestTemplate) {
-    this.testRestTemplate = testRestTemplate;
-  }
+  TestRestTemplate testRestTemplate;
+
+//  public CustomerControllerIntegrationTest(
+//      TestRestTemplate testRestTemplate) {
+//    this.testRestTemplate = testRestTemplate;
+//  }
 
   @Test
-  public void registerCustomerTest() {
+//  @Sql("/data.sql")
+//  @Disabled
+  public void registerCustomerTest() throws URISyntaxException {
 
     final var headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
 
     final var customerObject = new JSONObject();
-    customerObject.put("id", 1000L);
+//    customerObject.put("id", 1000L);
     customerObject.put("customerName", "test customer");
     customerObject.put("mobileNumber", "1234567890");
     customerObject.put("address", "Sri Lanka");
 
-    HttpEntity<String> request = new HttpEntity<>(customerObject.toString(), headers);
+//    CustomerDto customerDto = CustomerDto.builder().customerName("test customer")
+//        .mobileNumber("1234567890")
+//        .address("Sri Lanka").build();
 
-    CustomerDto createdCustomer = testRestTemplate.postForObject(
-        "http://localhost:".concat(String.valueOf(port)).concat("/coffeeeshop/api/v1/customer"),
-        request, CustomerDto.class);
+    HttpEntity request = new HttpEntity(customerObject, headers);
+//    HttpEntity<CustomerDto> request = new HttpEntity<CustomerDto>(customerDto, headers);
+//    String url = "http://localhost:" + port + "/coffeeshop/api/v1/customers";
+//    String url = "http://localhost:" + port + "/coffeeshop/api/v1/customers";
 
-    assertThat(createdCustomer).isNotNull();
-    assertThat(createdCustomer.getId()).isEqualTo(1000);
+    URI url = new URI("http://localhost:" + port + "/coffeeshop/api/v1/customers");
+//    JsonNode response = testRestTemplate.postForObject(url, request, JsonNode.class);
+    ResponseEntity<CustomerDto> requestEntity = testRestTemplate.postForEntity("/coffeeshop/api/v1/customers/", request, CustomerDto.class);
+    System.out.println("#############");
+    System.out.println(url);
+    System.out.println(requestEntity);
+
+//    CustomerDto createdCustomer = testRestTemplate.postForObject(
+//        "http://localhost:".concat(String.valueOf(port)).concat("/coffeeshop/api/v1/customers"),
+//        request, CustomerDto.class);
+
+//    assertThat(createdCustomer).isNotNull();
+//2    assertThat(createdCustomer.getId()).isEqualTo(1000L);
+
+//    http://localhost:8080/coffeeshop/api/v1/customers
+  }
+
+  @Disabled
+  @Test
+  @Sql("/data.sql")
+  public void getCustomerById(){
+    ResponseEntity<CustomerDto> requestEntity = testRestTemplate.getForEntity( "http://localhost:" + port +"/coffeeshop/api/v1/customers/1", CustomerDto.class);
+    System.out.println(requestEntity);
+
   }
 }

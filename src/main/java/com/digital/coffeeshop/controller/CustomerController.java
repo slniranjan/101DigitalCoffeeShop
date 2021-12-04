@@ -4,7 +4,6 @@ import com.digital.coffeeshop.dto.CustomerDto;
 import com.digital.coffeeshop.entity.Customer;
 import com.digital.coffeeshop.exception.ResourceNotFoundException;
 import com.digital.coffeeshop.service.CustomerService;
-import com.digital.coffeeshop.util.Constant;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Niranjan Thilakarathna
  */
 @RestController
-@RequestMapping(path = {"/api/v1/customers"}, produces = Constant.PRODUCE_TYPE)
+@RequestMapping(path = {"/api/v1/customers"}, produces = MediaType.APPLICATION_JSON_VALUE)
 @Validated
 public class CustomerController {
 
@@ -54,8 +54,8 @@ public class CustomerController {
    */
   @Operation(summary = "Register new customer")
   @ApiResponse(responseCode = "201", description = "Customer is created", content = {
-      @Content(mediaType = Constant.PRODUCE_TYPE, schema = @Schema(implementation = CustomerDto.class))})
-  @PostMapping(consumes = Constant.PRODUCE_TYPE)
+      @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CustomerDto.class))})
+  @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<CustomerDto> registerCustomer(@Valid @RequestBody CustomerDto customerDto) {
     logger.info("Customer creation start:");
 
@@ -77,17 +77,14 @@ public class CustomerController {
   @Operation(summary = "Get a customer by its id")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Found the customer", content = {
-          @Content(mediaType = Constant.PRODUCE_TYPE, schema = @Schema(implementation = CustomerDto.class))}),
-      @ApiResponse(responseCode = "404", description = "Order not found", content = @Content)})
+          @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CustomerDto.class))}),
+      @ApiResponse(responseCode = "404", description = "Customer not found", content = @Content)})
   @GetMapping(path = "/{id}")
   public ResponseEntity<CustomerDto> getCustomer(@PathVariable("id") Long customerId) {
     logger.info("Get customer by id started:");
 
     final Customer customer = customerService.getCustomer(customerId).orElseThrow(
         () -> new ResourceNotFoundException("Not found customer with id: " + customerId));
-
-    final var end = String.format("Customer creation success: %s", customer.toString());
-    logger.info(end);
 
     return ResponseEntity.ok(modelMapper.map(customer, CustomerDto.class));
 
