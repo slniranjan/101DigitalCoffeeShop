@@ -29,7 +29,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureJsonTesters
 @WebMvcTest(CustomerController.class)
-@Disabled
 class CustomerControllerTest {
 
   @Autowired
