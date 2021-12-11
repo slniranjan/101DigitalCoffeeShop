@@ -9,6 +9,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -80,6 +83,7 @@ public class CustomerController {
           @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CustomerDto.class))}),
       @ApiResponse(responseCode = "404", description = "Customer not found", content = @Content)})
   @GetMapping(path = "/{id}")
+  @RolesAllowed("user")
   public ResponseEntity<CustomerDto> getCustomer(@PathVariable("id") Long customerId) {
     logger.info("Get customer by id started:");
 
@@ -89,4 +93,27 @@ public class CustomerController {
     return ResponseEntity.ok(modelMapper.map(customer, CustomerDto.class));
 
   }
+
+  /**
+   * @return CutomerDto Return customer details by given customer id
+   */
+  @Operation(summary = "Get all registered customers")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Found the customers", content = {
+          @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CustomerDto.class))}),
+  })
+  @GetMapping()
+  @RolesAllowed("admin")
+  public ResponseEntity<List<CustomerDto>> getAllCustomers() {
+    logger.info("Get all customers started");
+
+    final List<Customer> allCustomers = customerService.getAllCustomers();
+    final List<CustomerDto> customerDtos = allCustomers.stream().map(c ->
+        modelMapper.map(c, CustomerDto.class)
+    ).collect(Collectors.toList());
+
+    return ResponseEntity.ok(customerDtos);
+
+  }
+
 }
